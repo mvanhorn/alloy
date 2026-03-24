@@ -47,6 +47,19 @@ func GetRelabelingRules(serverID string, cp *CloudProvider) []*relabel.Config {
 
 			rs = append(rs, &providerName, &providerRegion, &providerAccount)
 		}
+		if cp.GCP != nil {
+			providerName := relabel.DefaultRelabelConfig
+			providerName.Replacement = "gcp"
+			providerName.TargetLabel = "provider_name"
+			providerName.Action = relabel.Replace
+
+			providerAccount := relabel.DefaultRelabelConfig
+			providerAccount.Replacement = cp.GCP.ProjectID
+			providerAccount.TargetLabel = "provider_account"
+			providerAccount.Action = relabel.Replace
+
+			rs = append(rs, &providerName, &providerAccount)
+		}
 	}
 
 	return rs
