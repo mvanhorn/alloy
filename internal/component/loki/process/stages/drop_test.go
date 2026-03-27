@@ -237,7 +237,7 @@ func Test_dropStage_Process(t *testing.T) {
 			name: "Regex Matched Source(int) and Expression",
 			config: &DropConfig{
 				Source:     "key",
-				Expression: regexp.MustCompile("50"),
+				Expression: regexp.MustCompileNonEmpty("50"),
 			},
 			labels: model.LabelSet{},
 			extracted: map[string]any{
@@ -249,7 +249,7 @@ func Test_dropStage_Process(t *testing.T) {
 			name: "Regex Matched Source(string) and Expression",
 			config: &DropConfig{
 				Source:     "key",
-				Expression: regexp.MustCompile("50"),
+				Expression: regexp.MustCompileNonEmpty("50"),
 			},
 			labels: model.LabelSet{},
 			extracted: map[string]any{
@@ -261,7 +261,7 @@ func Test_dropStage_Process(t *testing.T) {
 			name: "Regex Matched Source and Expression with multiple sources",
 			config: &DropConfig{
 				Source:     "key1,key2",
-				Expression: regexp.MustCompile(`val\d{1};val\d{3}$`),
+				Expression: regexp.MustCompileNonEmpty(`val\d{1};val\d{3}$`),
 			},
 			labels: model.LabelSet{},
 			extracted: map[string]any{
@@ -275,7 +275,7 @@ func Test_dropStage_Process(t *testing.T) {
 			config: &DropConfig{
 				Source:     "key1,key2",
 				Separator:  "#",
-				Expression: regexp.MustCompile(`val\d{1}#val\d{3}$`),
+				Expression: regexp.MustCompileNonEmpty(`val\d{1}#val\d{3}$`),
 			},
 			labels: model.LabelSet{},
 			extracted: map[string]any{
@@ -288,7 +288,7 @@ func Test_dropStage_Process(t *testing.T) {
 			name: "Regex Did not match Source and Expression",
 			config: &DropConfig{
 				Source:     "key",
-				Expression: regexp.MustCompile(".*val.*"),
+				Expression: regexp.MustCompileNonEmpty(".*val.*"),
 			},
 			labels: model.LabelSet{},
 			extracted: map[string]any{
@@ -300,7 +300,7 @@ func Test_dropStage_Process(t *testing.T) {
 			name: "Regex Did not match Source and Expression with multiple sources",
 			config: &DropConfig{
 				Source:     "key1,key2",
-				Expression: regexp.MustCompile(`match\d+;match\d+`),
+				Expression: regexp.MustCompileNonEmpty(`match\d+;match\d+`),
 			},
 			labels: model.LabelSet{},
 			extracted: map[string]any{
@@ -314,7 +314,7 @@ func Test_dropStage_Process(t *testing.T) {
 			config: &DropConfig{
 				Source:     "key1,key2",
 				Separator:  "#",
-				Expression: regexp.MustCompile(`match\d;match\d`),
+				Expression: regexp.MustCompileNonEmpty(`match\d;match\d`),
 			},
 			labels: model.LabelSet{},
 			extracted: map[string]any{
@@ -327,7 +327,7 @@ func Test_dropStage_Process(t *testing.T) {
 			name: "Regex No Matching Source",
 			config: &DropConfig{
 				Source:     "key",
-				Expression: regexp.MustCompile(".*val.*"),
+				Expression: regexp.MustCompileNonEmpty(".*val.*"),
 			},
 			labels: model.LabelSet{},
 			extracted: map[string]any{
@@ -338,7 +338,7 @@ func Test_dropStage_Process(t *testing.T) {
 		{
 			name: "Regex Did Not Match Line",
 			config: &DropConfig{
-				Expression: regexp.MustCompile(".*val.*"),
+				Expression: regexp.MustCompileNonEmpty(".*val.*"),
 			},
 			labels:     model.LabelSet{},
 			entry:      "this is a line which does not match the regex",
@@ -348,7 +348,7 @@ func Test_dropStage_Process(t *testing.T) {
 		{
 			name: "Regex Matched Line",
 			config: &DropConfig{
-				Expression: regexp.MustCompile(".*val.*"),
+				Expression: regexp.MustCompileNonEmpty(".*val.*"),
 			},
 			labels:     model.LabelSet{},
 			entry:      "this is a line with the word value in it",
@@ -398,7 +398,7 @@ func Test_dropStage_Process(t *testing.T) {
 			name: "Everything Must Match",
 			config: &DropConfig{
 				Source:     "key",
-				Expression: regexp.MustCompile(".*val.*"),
+				Expression: regexp.MustCompileNonEmpty(".*val.*"),
 				OlderThan:  oneHour,
 				LongerThan: tenBytes,
 			},

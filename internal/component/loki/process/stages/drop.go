@@ -32,13 +32,13 @@ var (
 
 // DropConfig contains the configuration for a dropStage
 type DropConfig struct {
-	DropReason string              `alloy:"drop_counter_reason,attr,optional"`
-	Source     string              `alloy:"source,attr,optional"`
-	Value      string              `alloy:"value,attr,optional"`
-	Separator  string              `alloy:"separator,attr,optional"`
-	Expression *alloyregexp.Regexp `alloy:"expression,attr,optional"`
-	OlderThan  time.Duration       `alloy:"older_than,attr,optional"`
-	LongerThan units.Base2Bytes    `alloy:"longer_than,attr,optional"`
+	DropReason string                      `alloy:"drop_counter_reason,attr,optional"`
+	Source     string                      `alloy:"source,attr,optional"`
+	Value      string                      `alloy:"value,attr,optional"`
+	Separator  string                      `alloy:"separator,attr,optional"`
+	Expression *alloyregexp.NonEmptyRegexp `alloy:"expression,attr,optional"`
+	OlderThan  time.Duration               `alloy:"older_than,attr,optional"`
+	LongerThan units.Base2Bytes            `alloy:"longer_than,attr,optional"`
 }
 
 // validateDropConfig validates the DropConfig for the dropStage

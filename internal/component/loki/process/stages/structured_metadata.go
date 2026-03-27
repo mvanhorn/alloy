@@ -14,8 +14,8 @@ import (
 )
 
 type StructuredMetadataConfig struct {
-	Values map[string]*string `alloy:"values,attr,optional"`
-	Regex  *regexp.Regexp     `alloy:"regex,attr,optional"`
+	Values map[string]*string     `alloy:"values,attr,optional"`
+	Regex  *regexp.NonEmptyRegexp `alloy:"regex,attr,optional"`
 }
 
 // validateStructuredMetadataConfig validates the structured metadata stage config.
@@ -41,12 +41,12 @@ func validateStructuredMetadataConfig(c map[string]*string) (map[string]string, 
 	return ret, nil
 }
 
-func newStructuredMetadataStage(logger log.Logger, configs StructuredMetadataConfig) (Stage, error) {
+func newStructuredMetadataStage(logger log.Logger, cfg StructuredMetadataConfig) (Stage, error) {
 	var labelsConfig map[string]string
 
-	if len(configs.Values) > 0 {
+	if len(cfg.Values) > 0 {
 		var err error
-		labelsConfig, err = validateStructuredMetadataConfig(configs.Values)
+		labelsConfig, err = validateStructuredMetadataConfig(cfg.Values)
 		if err != nil {
 			return nil, err
 		}
@@ -54,14 +54,14 @@ func newStructuredMetadataStage(logger log.Logger, configs StructuredMetadataCon
 
 	return &structuredMetadataStage{
 		labelsConfig: labelsConfig,
-		regex:        configs.Regex,
+		regex:        cfg.Regex,
 		logger:       logger,
 	}, nil
 }
 
 type structuredMetadataStage struct {
 	labelsConfig map[string]string
-	regex        *regexp.Regexp
+	regex        *regexp.NonEmptyRegexp
 	logger       log.Logger
 }
 
