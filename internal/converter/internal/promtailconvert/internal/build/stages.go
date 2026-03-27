@@ -322,10 +322,10 @@ func convertDrop(cfg any, diags *diag.Diagnostics) (stages.StageConfig, bool) {
 		}
 	}
 
-	var expr *regexp.Regexp
+	var expr *regexp.NonEmptyRegexp
 	if pDrop.Expression != nil {
 		var err error
-		expr, err = regexp.Compile(*pDrop.Expression)
+		expr, err = regexp.CompileNonEmpty(*pDrop.Expression)
 		if err != nil {
 			addInvalidStageError(diags, pDrop, err)
 			return stages.StageConfig{}, false
